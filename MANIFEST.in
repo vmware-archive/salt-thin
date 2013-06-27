@@ -1,0 +1,6 @@
+recursive-include salt *
+recursive-include markupsafe *
+recursive-include jinja2 *
+recursive-include msgpack_pure *
+recursive-include yaml *
+include salt-call
