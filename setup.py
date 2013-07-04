@@ -77,7 +77,7 @@ def clean():
 
 build_setup('git')
 setup(name='salt-thin',
-      version='0.15.90',
+      version='0.16.0',
       description='Salt without the network and bundled deps',
       author='Thomas S Hatch',
       author_email='thatch@saltstack.com',
