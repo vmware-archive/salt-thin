@@ -6,6 +6,7 @@ import os
 import shutil
 import urllib2
 import subprocess
+import sys
 from distutils.core import setup
 
 
@@ -24,12 +25,37 @@ libs = set([
             ])
 
 CWD = os.getcwd()
+PATH = os.environ['PATH']
 
+prereqs = set([
+            'wget',
+            'git',
+            'tar',
+            ])
+
+def check_prereq():
+    '''
+    Check to ensure the system has the necessary tools to run this script
+    '''
+    failed_deps = [] 
+    for req in prereqs:
+        found = False
+        for path in PATH.split(os.pathsep):
+            if os.path.exists(os.path.join(path, req)):
+                found = True
+        if not found:
+            failed_deps.append(req)
+
+    return failed_deps
 
 def build_setup(salt):
     '''
     Download the components
     '''
+    for failed_req in check_prereq():
+        print "{0} not installed. Aborting!".format(failed_req)
+        sys.exit(1)
+
     for name, addr in components.items():
         subprocess.call('wget --no-check-certificate {0}'.format(addr), shell=True)
         subprocess.call('tar xvf {0}'.format(os.path.basename(addr)), shell=True)
