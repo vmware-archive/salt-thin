@@ -94,6 +94,7 @@ def build_setup(salt, git_version = None):
                 if sub in libs:
                     shutil.copytree(full, os.path.join(CWD, sub))
     shutil.copy('salt_git/scripts/salt-call', os.path.join(CWD, 'salt-call'))
+    shutil.copy('salt_git/scripts/salt-ssh', os.path.join(CWD, 'salt-ssh'))
 
 
 def clean():
@@ -130,6 +131,6 @@ setup(name='salt-thin',
       author='Thomas S Hatch',
       author_email='thatch@saltstack.com',
       url='https://github.com/saltstack/salt-thin',
-      scripts=['salt-call'],
+      scripts=['salt-call', 'salt-ssh'],
       cmdclass={'sdist': sdist},
 )

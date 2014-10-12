@@ -4,3 +4,4 @@ recursive-include jinja2 *
 recursive-include msgpack_pure *
 recursive-include yaml *
 include salt-call
+include salt-ssh
