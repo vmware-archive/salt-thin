@@ -12,10 +12,11 @@ import distutils.command.sdist
 from distutils.core import setup
 
 components = {
-              'Jinja2-2.7': 'https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.tar.gz',
-              'MarkupSafe-0.18': 'https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.18.tar.gz',
+              'Jinja2-2.7.3': 'https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz',
+              'MarkupSafe-0.23': 'https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz',
               'msgpack-pure-0.1.3': 'https://pypi.python.org/packages/source/m/msgpack-pure/msgpack-pure-0.1.3.tar.gz',
-              'PyYAML-3.10': 'https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz'
+              'PyYAML-3.11': 'https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz',
+              'requests-2.4.3': 'https://pypi.python.org/packages/source/r/requests/requests-2.4.3.tar.gz',
               }
 libs = set([
             'salt',
@@ -23,6 +24,7 @@ libs = set([
             'jinja2',
             'msgpack_pure',
             'markupsafe',
+            'requests',
             ])
 
 CWD = os.getcwd()
