@@ -7,8 +7,9 @@ import shutil
 import urllib2
 import subprocess
 import sys
-from distutils.core import setup
 
+import distutils.command.sdist
+from distutils.core import setup
 
 components = {
               'Jinja2-2.7': 'https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.tar.gz',
@@ -48,7 +49,7 @@ def check_prereq():
 
     return failed_deps
 
-def build_setup(salt):
+def build_setup(salt, git_version = None):
     '''
     Download the components
     '''
@@ -71,6 +72,12 @@ def build_setup(salt):
     if salt == 'git':
         subprocess.call('git clone https://github.com/saltstack/salt.git', shell=True)
         shutil.move('salt', 'salt_git')
+        cwd = os.getcwd()
+        try:
+            os.chdir("salt_git")
+            subprocess.call('git checkout {0}'.format(git_version), shell=True)
+        finally:
+            os.chdir(cwd)
         shutil.move('salt_git/salt', os.path.join(CWD, 'salt'))
     else:
         tar_tgt = '{0}.tgz'.format(name)
@@ -100,13 +107,29 @@ def clean():
     for name in libs:
         shutil.rmtree(name)
 
+class sdist(distutils.command.sdist.sdist):
+    '''
+    Subclass of sdist subcommand for optional git version.
+    '''
+    user_options = distutils.command.sdist.sdist.user_options + [
+        ('git-version=', None, 'Specify Git version'),
+    ]
 
-build_setup('git')
+    def initialize_options(self, *args, **kwargs):
+        self.git_version = 'develop'
+        distutils.command.sdist.sdist.initialize_options(self, *args, **kwargs)
+
+    def run(self, *args, **kwargs):
+        self.distribution.metadata.version = self.git_version
+        build_setup('git', self.git_version)
+        distutils.command.sdist.sdist.run(self, *args, **kwargs)
+
 setup(name='salt-thin',
-      version='0.16.0',
+      version=None,
       description='Salt without the network and bundled deps',
       author='Thomas S Hatch',
       author_email='thatch@saltstack.com',
       url='https://github.com/saltstack/salt-thin',
-      scripts=['salt/scripts/salt-call']
-      )
+      scripts=['salt-call'],
+      cmdclass={'sdist': sdist},
+)
