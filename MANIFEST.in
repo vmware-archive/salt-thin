@@ -3,4 +3,6 @@ recursive-include markupsafe *
 recursive-include jinja2 *
 recursive-include msgpack_pure *
 recursive-include yaml *
+recursive-include requests *
 include salt-call
+include salt-ssh
